@@ -1,6 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
 Type=Service
+Icon=tools-wizard
 ServiceTypes=Kopete/Plugin
 
 X-Kopete-Version=1000900
@@ -15,3 +16,4 @@ X-KDE-PluginInfo-License=GPL
 X-KDE-PluginInfo-EnabledByDefault=false
 
 Name=Kopete Psyko Plugin
+Comment=Causes conversation windows to appear as other users begin to message you.
