@@ -46,10 +46,15 @@ void PsykoPlugin::initializePlugin()
 
 void PsykoPlugin::contactSentTypingMessage(const Kopete::Contact* contact, bool isTyping)
 {
-	if (isTyping)
+	Kopete::Contact* chatContact = const_cast<Kopete::Contact*>(contact);
+	Kopete::ChatSession* chatSession = chatContact->manager();
+	
+	// check if the user is actually typing and make sure we do not have a
+	// chat window (view) yet
+	if (isTyping && !chatSession->view(false))
 	{
 		// start chat (= open chat window)
-		contact->metaContact()->startChat();
+		chatContact->startChat();
 	}
 }
 
