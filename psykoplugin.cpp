@@ -55,6 +55,15 @@ void PsykoPlugin::contactSentTypingMessage(const Kopete::Contact* contact, bool 
 	{
 		// start chat (= open chat window)
 		chatContact->startChat();
+		
+		// TODO: read from config file if the user wants to append a message to the chat window
+		// build the chat message
+		Kopete::Message message(chatSession->myself(), chatSession->myself());
+		message.setDirection(Kopete::Message::Internal);
+		message.setPlainBody(i18n("You feel a disturbance in the force..."));
+		
+		// append the message to the chat window
+		chatSession->appendMessage(message);
 	}
 }
 
