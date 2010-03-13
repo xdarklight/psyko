@@ -1,0 +1,14 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Service
+ServiceTypes=KCModule
+X-KDE-ServiceTypes=KCModule
+
+X-KDE-ModuleType=Library
+X-KDE-Library=kcm_kopete_psyko
+X-KDE-FactoryName=kcm_kopete_psyko
+X-KDE-ParentApp=kopete_psyko
+X-KDE-ParentComponents=kopete_psyko
+
+Name=Kopete Psyko Plugin
+Comment=Causes conversation windows to appear as other users begin to message you.

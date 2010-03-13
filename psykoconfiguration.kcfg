@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<kcfg xmlns="http://www.kde.org/standards/kcfg/1.0"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
+      http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
+	<kcfgfile name="kopeterc" />
+	
+	<group name="Kopete Psyko Plugin">
+		<entry name="ShowMessageInChatWindow" type="Bool">
+			<label>Show Message in Chat Window</label>
+			<default>true</default>
+		</entry>
+		<entry name="DisableWhenNotAvailable" type="Bool">
+			<label>Disable when I am not available</label>
+			<default>false</default>
+		</entry>
+	</group>
+</kcfg>

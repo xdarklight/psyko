@@ -1,4 +1,5 @@
 #include "psykoplugin.h"
+#include "psykoconfiguration.h"
 
 #include <kopete/kopetecontact.h>
 #include <kopete/kopetemetacontact.h>
@@ -21,6 +22,10 @@ PsykoPlugin::PsykoPlugin(QObject* parent, const QVariantList& args)
 	{
 		m_instance = this;
 		
+		// read the settings from the config file
+		settingsChanged();
+		
+		// initialize the plugin
 		initializePlugin();
 	}
 }
@@ -32,6 +37,8 @@ PsykoPlugin* PsykoPlugin::self()
 
 void PsykoPlugin::initializePlugin()
 {
+	connect(this, SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));
+	
 	QList<Kopete::ChatSession*> chatSessionList = Kopete::ChatSessionManager::self()->sessions();
 	
 	// connect to the signals for all existing chat session
@@ -44,6 +51,35 @@ void PsykoPlugin::initializePlugin()
 	connect(Kopete::ChatSessionManager::self(), SIGNAL(chatSessionCreated(Kopete::ChatSession*)), self(), SLOT(chatSessionCreated(Kopete::ChatSession*)));
 }
 
+void PsykoPlugin::settingsChanged()
+{
+	// read the config file
+	PsykoConfiguration* config = PsykoConfiguration::self();
+	config->readConfig();
+	
+	// set the values from the config file to our member variables
+	m_showMessageInChatWindow = config->showMessageInChatWindow();
+	m_disableWhenNotAvailable = config->disableWhenNotAvailable();
+}
+
+bool PsykoPlugin::userIsAvailable(const Kopete::Contact* contact)
+{
+	bool isAvailable = true;
+	
+	// only check if the user is unavailable if the setting is activated
+	if (m_disableWhenNotAvailable)
+	{
+		// check if we are NOT online (= we're away, invisible or something else..)
+		if (contact->onlineStatus().status() != Kopete::OnlineStatus::Online)
+		{
+			// then we're not available
+			isAvailable = false;
+		}
+	}
+	
+	return isAvailable;
+}
+
 void PsykoPlugin::contactSentTypingMessage(const Kopete::Contact* contact, bool isTyping)
 {
 	Kopete::Contact* chatContact = const_cast<Kopete::Contact*>(contact);
@@ -51,19 +87,22 @@ void PsykoPlugin::contactSentTypingMessage(const Kopete::Contact* contact, bool 
 	
 	// check if the user is actually typing and make sure we do not have a
 	// chat window (view) yet
-	if (isTyping && !chatSession->view(false))
+	// also we need to check if we are available
+	if (isTyping && !chatSession->view(false) && userIsAvailable(chatSession->myself()))
 	{
 		// start chat (= open chat window)
 		chatContact->startChat();
 		
-		// TODO: read from config file if the user wants to append a message to the chat window
-		// build the chat message
-		Kopete::Message message(chatSession->myself(), chatSession->myself());
-		message.setDirection(Kopete::Message::Internal);
-		message.setPlainBody(i18n("You feel a disturbance in the force..."));
-		
-		// append the message to the chat window
-		chatSession->appendMessage(message);
+		if (m_showMessageInChatWindow)
+		{
+			// build the chat message
+			Kopete::Message message(chatSession->myself(), chatSession->myself());
+			message.setDirection(Kopete::Message::Internal);
+			message.setPlainBody(i18n("You feel a disturbance in the force..."));
+			
+			// append the message to the chat window
+			chatSession->appendMessage(message);
+		}
 	}
 }
 

@@ -19,7 +19,10 @@ class PsykoPlugin : public Kopete::Plugin
 		PsykoPlugin(QObject* parent, const QVariantList& args);
 		
 		static PsykoPlugin* self();
-	
+		
+	protected slots:
+		void settingsChanged();
+		
 	private slots:
 		void contactSentTypingMessage(const Kopete::Contact* contact, bool isTyping);
 		void chatSessionClosing(Kopete::ChatSession* chatSession);
@@ -27,6 +30,11 @@ class PsykoPlugin : public Kopete::Plugin
 	
 	private:
 		void initializePlugin();
+		
+		bool userIsAvailable(const Kopete::Contact* contact);
+		
+		bool m_showMessageInChatWindow;
+		bool m_disableWhenNotAvailable;
 		
 		static PsykoPlugin* m_instance;
 };
