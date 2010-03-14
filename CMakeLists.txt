@@ -3,6 +3,7 @@ project( KOPETE_PSYKO )
 find_package( KDE4 REQUIRED ) 
 find_package( Automoc4 REQUIRED )
 find_package( Qt4 REQUIRED )
+find_package( Kopete REQUIRED )
 
 add_definitions( ${QT_DEFINITIONS} ${KDE4_DEFINITIONS} )
 
