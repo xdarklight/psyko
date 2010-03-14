@@ -7,6 +7,8 @@
       http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
 	<kcfgfile name="kopeterc" />
 	
+	<include>klocalizedstring.h</include>
+	
 	<group name="Kopete Psyko Plugin">
 		<entry name="ShowMessageInChatWindow" type="Bool">
 			<label>Show Message in Chat Window</label>
@@ -15,6 +17,11 @@
 		<entry name="DisableWhenNotAvailable" type="Bool">
 			<label>Disable when I am not available</label>
 			<default>false</default>
+		</entry>
+		<entry name="ChatWindowMessage" type="String">
+			<label>The Message which is displayed in the Chat Window</label>
+			<tooltip>The Message which is displayed in the Chat Window</tooltip>
+			<default code="true">i18n("You feel a disturbance in the force...")</default>
 		</entry>
 	</group>
 </kcfg>

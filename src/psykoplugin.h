@@ -101,6 +101,7 @@ class PsykoPlugin : public Kopete::Plugin
 		
 		bool m_showMessageInChatWindow;
 		bool m_disableWhenNotAvailable;
+		QString m_chatWindowMessage;
 		
 		static PsykoPlugin* m_instance;
 };

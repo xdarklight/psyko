@@ -79,6 +79,7 @@ void PsykoPlugin::settingsChanged()
 	// set the values from the config file to our member variables
 	m_showMessageInChatWindow = config->showMessageInChatWindow();
 	m_disableWhenNotAvailable = config->disableWhenNotAvailable();
+	m_chatWindowMessage = config->chatWindowMessage();
 }
 
 bool PsykoPlugin::userIsAvailable(const Kopete::Contact* contact)
@@ -114,10 +115,19 @@ void PsykoPlugin::contactSentTypingMessage(const Kopete::Contact* contact, bool 
 		
 		if (m_showMessageInChatWindow)
 		{
+			QString messageText = m_chatWindowMessage;
+			
+			// we should do a fallback if the message text is empty
+			if (messageText.isEmpty())
+			{
+				// fallback to our default message
+				messageText = i18n("You feel a disturbance in the force...");
+			}
+			
 			// build the chat message
 			Kopete::Message message(chatSession->myself(), chatSession->myself());
 			message.setDirection(Kopete::Message::Internal);
-			message.setPlainBody(i18n("You feel a disturbance in the force..."));
+			message.setPlainBody(messageText);
 			
 			// append the message to the chat window
 			chatSession->appendMessage(message);
