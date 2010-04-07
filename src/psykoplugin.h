@@ -89,13 +89,10 @@ class PsykoPlugin : public Kopete::Plugin
 		
 		/**
 		  * determines if the given contact is online or not
-		  * note that this depends on whether the 'disable when not available'
-		  * setting is activated or not
 		  *
 		  * @param contact the contact which should be checked
 		  *
-		  * @returns true if either 'disable when not available' is not activated
-		  *          or if the user is really online.
+		  * @returns true the user has the status @see Kopete::OnlineStatus::Online
 		  */
 		bool userIsAvailable(const Kopete::Contact* contact);
 		

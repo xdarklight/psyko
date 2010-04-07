@@ -86,15 +86,11 @@ bool PsykoPlugin::userIsAvailable(const Kopete::Contact* contact)
 {
 	bool isAvailable = true;
 	
-	// only check if the user is unavailable if the setting is activated
-	if (m_disableWhenNotAvailable)
+	// check if the user is NOT online (= he's away, invisible or something else..)
+	if (contact->onlineStatus().status() != Kopete::OnlineStatus::Online)
 	{
-		// check if we are NOT online (= we're away, invisible or something else..)
-		if (contact->onlineStatus().status() != Kopete::OnlineStatus::Online)
-		{
-			// then we're not available
-			isAvailable = false;
-		}
+		// then he's not available
+		isAvailable = false;
 	}
 	
 	return isAvailable;
@@ -107,8 +103,11 @@ void PsykoPlugin::contactSentTypingMessage(const Kopete::Contact* contact, bool 
 	
 	// check if the user is actually typing and make sure we do not have a
 	// chat window (view) yet
-	// also we need to check if we are available
-	if (isTyping && !chatSession->view(false) && userIsAvailable(chatSession->myself()))
+	// also we need to check if either the plugin is enabled even if we're unavialable
+	// or if we are really available
+	if (isTyping &&
+		!chatSession->view(false) &&
+		(!m_disableWhenNotAvailable || userIsAvailable(chatSession->myself())))
 	{
 		// start chat (= open chat window)
 		chatContact->startChat();
